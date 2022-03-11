@@ -1,0 +1,34 @@
+{
+    "name": "webgraphe/predicate-tree",
+    "description": "A library to evaluate predicate trees",
+    "type": "library",
+    "license": "MIT",
+    "version": "0.1.0",
+    "platform": {
+        "php": "7.4.0"
+    },
+    "authors": [
+        {
+            "name": "Jean-Philippe Léveillé",
+            "email": "jpleveille@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Webgraphe\\PredicateTree\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Webgraphe\\Tests\\LogicTree\\": "tests/"
+        }
+    },
+    "require": {
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
