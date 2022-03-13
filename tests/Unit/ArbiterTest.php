@@ -24,14 +24,19 @@ class ArbiterTest extends TestCase
                 $this->returnValue = $returnValue;
             }
 
+            public function toArray(): array
+            {
+                return array_merge(
+                    parent::toArray(),
+                    [
+                        'returnValue' => $this->returnValue,
+                    ]
+                );
+            }
+
             protected function evaluateProtected(Context $context): bool
             {
                 return $this->returnValue;
-            }
-
-            public function hash(): string
-            {
-                return md5(parent::hash() . ':' . ($this->returnValue ? '1' : '0'));
             }
         };
     }

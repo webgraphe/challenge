@@ -8,6 +8,8 @@ use Webgraphe\PredicateTree\Exceptions\ContextException;
 
 abstract class AbstractRule implements PredicateContract
 {
+    private static string $serializer;
+
     public function __construct()
     {
     }
@@ -19,6 +21,11 @@ abstract class AbstractRule implements PredicateContract
      */
     abstract protected function evaluateProtected(Context $context): bool;
 
+    public function toArray(): array
+    {
+        return [];
+    }
+
     /**
      * @param ContextContract $context
      * @return bool
@@ -29,9 +36,18 @@ abstract class AbstractRule implements PredicateContract
         return $this->evaluateProtected($this->assertContext($context));
     }
 
-    public function hash(): string
+    final public function hash(): string
     {
-        return md5(get_class($this));
+        return md5(call_user_func($this->serializer(), $this->marshal()));
+    }
+
+    private function marshal(): array
+    {
+        return [
+            'class' => static::class,
+            'serializer' => $this->serializer(),
+            'data' => $this->toArray(),
+        ];
     }
 
     /**
@@ -48,5 +64,18 @@ abstract class AbstractRule implements PredicateContract
         $class = Context::class;
 
         throw ContextException::invalidContext($context, "Not a $class");
+    }
+
+    public static function serializer(string $serializer = null): string
+    {
+        if (null !== $serializer) {
+            self::$serializer = $serializer;
+        } else {
+            self::$serializer ??= function_exists('igbinary_serialize')
+                ? 'igbinary_serialize'
+                : 'serialize';
+        }
+
+        return self::$serializer;
     }
 }

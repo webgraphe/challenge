@@ -12,6 +12,16 @@ class NotRule extends AbstractRule
         $this->rule = $rule;
     }
 
+    public function toArray(): array
+    {
+        return array_merge(
+            parent::toArray(),
+            [
+                'rule' => $this->rule->toArray(),
+            ]
+        );
+    }
+
     /**
      * @param AbstractRule $rule
      * @return static
@@ -24,10 +34,5 @@ class NotRule extends AbstractRule
     protected function evaluateProtected(Context $context): bool
     {
         return !$context->evaluate($this->rule);
-    }
-
-    public function hash(): string
-    {
-        return md5(get_class($this) . ':' . $this->rule->hash());
     }
 }
