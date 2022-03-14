@@ -1,6 +1,6 @@
 <?php
 
-namespace Webgraphe\PredicateTree\Contracts;
+namespace Webgraphe\RuleTree\Contracts;
 
 use JsonSerializable;
 

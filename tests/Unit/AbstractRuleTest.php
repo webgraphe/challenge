@@ -1,15 +1,15 @@
 <?php
 
-namespace Webgraphe\Tests\PredicateTree\Unit;
+namespace Webgraphe\Tests\RuleTree\Unit;
 
-use Webgraphe\PredicateTree\AbstractRule;
-use Webgraphe\PredicateTree\Context;
-use Webgraphe\PredicateTree\Contracts\ContextContract;
-use Webgraphe\PredicateTree\Contracts\RuleContract;
-use Webgraphe\PredicateTree\Exceptions\UnsupportedRuleException;
-use Webgraphe\Tests\PredicateTree\Dummies\AbstractDummyRule;
-use Webgraphe\Tests\PredicateTree\Dummies\FinalDummyRule;
-use Webgraphe\Tests\PredicateTree\TestCase;
+use Webgraphe\RuleTree\AbstractRule;
+use Webgraphe\RuleTree\Context;
+use Webgraphe\RuleTree\Contracts\ContextContract;
+use Webgraphe\RuleTree\Contracts\RuleContract;
+use Webgraphe\RuleTree\Exceptions\UnsupportedRuleException;
+use Webgraphe\Tests\RuleTree\Dummies\AbstractDummyRule;
+use Webgraphe\Tests\RuleTree\Dummies\FinalDummyRule;
+use Webgraphe\Tests\RuleTree\TestCase;
 
 class AbstractRuleTest extends TestCase
 {

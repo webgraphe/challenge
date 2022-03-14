@@ -1,11 +1,11 @@
 <?php
 
-namespace Webgraphe\PredicateTree\Exceptions;
+namespace Webgraphe\RuleTree\Exceptions;
 
-use Webgraphe\PredicateTree\Contracts\RuleContract;
-use Webgraphe\PredicateTree\PredicateTreeException;
+use Webgraphe\RuleTree\Contracts\RuleContract;
+use Webgraphe\RuleTree\RuleTreeException;
 
-class UnsupportedRuleException extends PredicateTreeException
+class UnsupportedRuleException extends RuleTreeException
 {
     private ?RuleContract $rule;
 

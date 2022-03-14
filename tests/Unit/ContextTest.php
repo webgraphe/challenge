@@ -1,21 +1,21 @@
 <?php
 
-namespace Webgraphe\Tests\PredicateTree\Unit;
+namespace Webgraphe\Tests\RuleTree\Unit;
 
 use Exception;
-use Webgraphe\PredicateTree\AbstractRule;
-use Webgraphe\PredicateTree\AndRule;
-use Webgraphe\PredicateTree\Context;
-use Webgraphe\PredicateTree\Contracts\ContextContract;
-use Webgraphe\PredicateTree\Exceptions\InvalidRuleNameException;
-use Webgraphe\PredicateTree\Exceptions\InvalidSerializerException;
-use Webgraphe\PredicateTree\Exceptions\RuleException;
-use Webgraphe\PredicateTree\Exceptions\RuleNameConflictException;
-use Webgraphe\PredicateTree\Exceptions\UnsupportedContextException;
-use Webgraphe\PredicateTree\NotRule;
-use Webgraphe\PredicateTree\OrRule;
-use Webgraphe\Tests\PredicateTree\Dummies\AbstractDummyRule;
-use Webgraphe\Tests\PredicateTree\TestCase;
+use Webgraphe\RuleTree\AbstractRule;
+use Webgraphe\RuleTree\AndRule;
+use Webgraphe\RuleTree\Context;
+use Webgraphe\RuleTree\Contracts\ContextContract;
+use Webgraphe\RuleTree\Exceptions\InvalidRuleNameException;
+use Webgraphe\RuleTree\Exceptions\InvalidSerializerException;
+use Webgraphe\RuleTree\Exceptions\RuleEvaluationException;
+use Webgraphe\RuleTree\Exceptions\RuleNameConflictException;
+use Webgraphe\RuleTree\Exceptions\UnsupportedContextException;
+use Webgraphe\RuleTree\NotRule;
+use Webgraphe\RuleTree\OrRule;
+use Webgraphe\Tests\RuleTree\Dummies\AbstractDummyRule;
+use Webgraphe\Tests\RuleTree\TestCase;
 
 /**
  * @covers ::Context
@@ -98,7 +98,7 @@ class ContextTest extends TestCase
 
     /**
      * @throws InvalidSerializerException
-     * @throws RuleException
+     * @throws RuleEvaluationException
      */
     public function testEvaluation()
     {
@@ -154,18 +154,18 @@ class ContextTest extends TestCase
 
     /**
      * @throws InvalidSerializerException
-     * @throws RuleException
+     * @throws RuleEvaluationException
      */
     public function testEvaluationException()
     {
         $context = Context::create();
-        $this->expectException(RuleException::class);
+        $this->expectException(RuleEvaluationException::class);
         $this->expectExceptionMessage("Evaluation failed");
 
         $rule = $this->exceptionRule($message = "Failure is part of the success", $code = 123);
         try {
             $context->evaluate($rule);
-        } catch (RuleException $e) {
+        } catch (RuleEvaluationException $e) {
             $this->assertInstanceOf(Exception::class, $previous = $e->getPrevious());
             $this->assertEquals($message, $previous->getMessage());
             $this->assertEquals($code, $previous->getCode());

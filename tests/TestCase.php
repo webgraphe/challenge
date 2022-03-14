@@ -1,6 +1,6 @@
 <?php
 
-namespace Webgraphe\Tests\PredicateTree;
+namespace Webgraphe\Tests\RuleTree;
 
 class TestCase extends \PHPUnit\Framework\TestCase
 {

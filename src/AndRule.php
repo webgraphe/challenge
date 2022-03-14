@@ -1,8 +1,8 @@
 <?php
 
-namespace Webgraphe\PredicateTree;
+namespace Webgraphe\RuleTree;
 
-use Webgraphe\PredicateTree\Exceptions\RuleException;
+use Webgraphe\RuleTree\Exceptions\RuleEvaluationException;
 
 class AndRule extends AbstractListRule
 {
@@ -20,7 +20,7 @@ class AndRule extends AbstractListRule
     /**
      * @param Context $context
      * @return bool
-     * @throws RuleException
+     * @throws RuleEvaluationException
      */
     protected function evaluateProtected(Context $context): bool
     {

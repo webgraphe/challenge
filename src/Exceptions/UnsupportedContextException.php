@@ -1,11 +1,11 @@
 <?php
 
-namespace Webgraphe\PredicateTree\Exceptions;
+namespace Webgraphe\RuleTree\Exceptions;
 
-use Webgraphe\PredicateTree\Contracts\ContextContract;
-use Webgraphe\PredicateTree\PredicateTreeException;
+use Webgraphe\RuleTree\Contracts\ContextContract;
+use Webgraphe\RuleTree\RuleTreeException;
 
-class UnsupportedContextException extends PredicateTreeException
+class UnsupportedContextException extends RuleTreeException
 {
     private ?ContextContract $context;
 

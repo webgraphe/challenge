@@ -1,15 +1,15 @@
 <?php
 
-namespace Webgraphe\PredicateTree;
+namespace Webgraphe\RuleTree;
 
 use Exception;
-use Webgraphe\PredicateTree\Contracts\ContextContract;
-use Webgraphe\PredicateTree\Contracts\RuleContract;
-use Webgraphe\PredicateTree\Exceptions\InvalidRuleNameException;
-use Webgraphe\PredicateTree\Exceptions\InvalidSerializerException;
-use Webgraphe\PredicateTree\Exceptions\RuleException;
-use Webgraphe\PredicateTree\Exceptions\RuleNameConflictException;
-use Webgraphe\PredicateTree\Exceptions\UnsupportedContextException;
+use Webgraphe\RuleTree\Contracts\ContextContract;
+use Webgraphe\RuleTree\Contracts\RuleContract;
+use Webgraphe\RuleTree\Exceptions\InvalidRuleNameException;
+use Webgraphe\RuleTree\Exceptions\InvalidSerializerException;
+use Webgraphe\RuleTree\Exceptions\RuleEvaluationException;
+use Webgraphe\RuleTree\Exceptions\RuleNameConflictException;
+use Webgraphe\RuleTree\Exceptions\UnsupportedContextException;
 
 class Context implements ContextContract
 {
@@ -84,17 +84,17 @@ class Context implements ContextContract
     }
 
     /**
-     * @param RuleContract $predicate
+     * @param RuleContract $rule
      * @return bool
-     * @throws RuleException
+     * @throws RuleEvaluationException
      */
-    public function evaluate(RuleContract $predicate): bool
+    public function evaluate(RuleContract $rule): bool
     {
-        $this->push($predicate);
+        $this->push($rule);
         try {
-            $result = $this->resultCache[$predicate->hash($this)] ??= new Result($predicate, $predicate->evaluate($this));
+            $result = $this->resultCache[$rule->hash($this)] ??= new Result($rule, $rule->evaluate($this));
         } catch (Exception $previous) {
-            throw new RuleException("Evaluation failed", 0, $previous);
+            throw new RuleEvaluationException("Evaluation failed", 0, $previous);
         }
         $this->pop();
 
@@ -128,9 +128,9 @@ class Context implements ContextContract
         return $this->rules[$name] ?? null;
     }
 
-    private function push(RuleContract $predicate)
+    private function push(RuleContract $rule)
     {
-        $this->ruleStack[] = $predicate;
+        $this->ruleStack[] = $rule;
     }
 
     private function pop()

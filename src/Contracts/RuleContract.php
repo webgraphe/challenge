@@ -1,8 +1,8 @@
 <?php
 
-namespace Webgraphe\PredicateTree\Contracts;
+namespace Webgraphe\RuleTree\Contracts;
 
-use Webgraphe\PredicateTree\Exceptions\UnsupportedContextException;
+use Webgraphe\RuleTree\Exceptions\UnsupportedContextException;
 
 interface RuleContract
 {

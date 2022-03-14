@@ -1,10 +1,10 @@
 <?php
 
-namespace Webgraphe\PredicateTree;
+namespace Webgraphe\RuleTree;
 
-use Webgraphe\PredicateTree\Contracts\ContextContract;
-use Webgraphe\PredicateTree\Contracts\RuleContract;
-use Webgraphe\PredicateTree\Exceptions\UnsupportedRuleException;
+use Webgraphe\RuleTree\Contracts\ContextContract;
+use Webgraphe\RuleTree\Contracts\RuleContract;
+use Webgraphe\RuleTree\Exceptions\UnsupportedRuleException;
 
 abstract class AbstractRule implements RuleContract
 {

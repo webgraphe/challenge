@@ -1,10 +1,10 @@
 <?php
 
-namespace Webgraphe\PredicateTree\Exceptions;
+namespace Webgraphe\RuleTree\Exceptions;
 
-use Webgraphe\PredicateTree\PredicateTreeException;
+use Webgraphe\RuleTree\RuleTreeException;
 
-class InvalidSerializerException extends PredicateTreeException
+class InvalidSerializerException extends RuleTreeException
 {
 
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Webgraphe\Tests\PredicateTree\Dummies;
+namespace Webgraphe\Tests\RuleTree\Dummies;
 
-use Webgraphe\PredicateTree\AbstractRule;
+use Webgraphe\RuleTree\AbstractRule;
 
 abstract class AbstractDummyRule extends AbstractRule
 {

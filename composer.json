@@ -17,12 +17,12 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Webgraphe\\PredicateTree\\": "src/"
+            "Webgraphe\\RuleTree\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Webgraphe\\Tests\\PredicateTree\\": "tests/"
+            "Webgraphe\\Tests\\RuleTree\\": "tests/"
         }
     },
     "require": {

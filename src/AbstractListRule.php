@@ -1,9 +1,9 @@
 <?php
 
-namespace Webgraphe\PredicateTree;
+namespace Webgraphe\RuleTree;
 
 use Iterator;
-use Webgraphe\PredicateTree\Contracts\ContextContract;
+use Webgraphe\RuleTree\Contracts\ContextContract;
 
 abstract class AbstractListRule extends AbstractRule implements Iterator
 {

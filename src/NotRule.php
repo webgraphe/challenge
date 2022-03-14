@@ -1,9 +1,9 @@
 <?php
 
-namespace Webgraphe\PredicateTree;
+namespace Webgraphe\RuleTree;
 
-use Webgraphe\PredicateTree\Contracts\ContextContract;
-use Webgraphe\PredicateTree\Exceptions\RuleException;
+use Webgraphe\RuleTree\Contracts\ContextContract;
+use Webgraphe\RuleTree\Exceptions\RuleEvaluationException;
 
 class NotRule extends AbstractRule
 {
@@ -47,7 +47,7 @@ class NotRule extends AbstractRule
     /**
      * @param Context $context
      * @return bool
-     * @throws RuleException
+     * @throws RuleEvaluationException
      */
     protected function evaluateProtected(Context $context): bool
     {

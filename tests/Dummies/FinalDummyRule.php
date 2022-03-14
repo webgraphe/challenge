@@ -1,9 +1,9 @@
 <?php
 
-namespace Webgraphe\Tests\PredicateTree\Dummies;
+namespace Webgraphe\Tests\RuleTree\Dummies;
 
-use Webgraphe\PredicateTree\AbstractRule;
-use Webgraphe\PredicateTree\Context;
+use Webgraphe\RuleTree\AbstractRule;
+use Webgraphe\RuleTree\Context;
 
 class FinalDummyRule extends AbstractRule
 {

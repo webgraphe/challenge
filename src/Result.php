@@ -1,29 +1,29 @@
 <?php
 
-namespace Webgraphe\PredicateTree;
+namespace Webgraphe\RuleTree;
 
-use Webgraphe\PredicateTree\Contracts\ContextContract;
-use Webgraphe\PredicateTree\Contracts\RuleContract;
+use Webgraphe\RuleTree\Contracts\ContextContract;
+use Webgraphe\RuleTree\Contracts\RuleContract;
 
 class Result
 {
-    private RuleContract $predicate;
+    private RuleContract $rule;
     private bool $success;
 
     /**
-     * @param RuleContract $predicate
+     * @param RuleContract $rule
      * @param bool $success
      */
-    public function __construct(RuleContract $predicate, bool $success)
+    public function __construct(RuleContract $rule, bool $success)
     {
-        $this->predicate = $predicate;
+        $this->rule = $rule;
         $this->success = $success;
     }
 
     public function toArray(ContextContract $context): array
     {
         return [
-            'rule' => $this->predicate->toArray($context),
+            'rule' => $this->rule->toArray($context),
             'success' => $this->success,
         ];
     }
