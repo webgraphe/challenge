@@ -3,10 +3,9 @@
 namespace Webgraphe\PredicateTree;
 
 use Webgraphe\PredicateTree\Contracts\ContextContract;
-use Webgraphe\PredicateTree\Contracts\PredicateContract;
-use Webgraphe\PredicateTree\Exceptions\ContextException;
+use Webgraphe\PredicateTree\Contracts\RuleContract;
 
-abstract class AbstractRule implements PredicateContract
+abstract class AbstractRule implements RuleContract
 {
     private static string $serializer;
 
@@ -17,11 +16,10 @@ abstract class AbstractRule implements PredicateContract
     /**
      * @param Context $context
      * @return bool
-     * @throws ContextException
      */
     abstract protected function evaluateProtected(Context $context): bool;
 
-    public function toArray(): array
+    public function toArray(ContextContract $context): array
     {
         return [];
     }
@@ -29,53 +27,33 @@ abstract class AbstractRule implements PredicateContract
     /**
      * @param ContextContract $context
      * @return bool
-     * @throws ContextException
      */
     final public function evaluate(ContextContract $context): bool
     {
         return $this->evaluateProtected($this->assertContext($context));
     }
 
-    final public function hash(): string
+    final public function hash(ContextContract $context): string
     {
-        return md5(call_user_func($this->serializer(), $this->marshal()));
+        return hash('fnv1a64', $this->marshal($context));
     }
 
-    private function marshal(): array
+    private function marshal(ContextContract $context): string
     {
-        return [
-            'class' => static::class,
-            'serializer' => $this->serializer(),
-            'data' => $this->toArray(),
-        ];
+        return $context->serialize(
+            [
+                'class' => static::class,
+                'data' => $this->toArray($context),
+            ]
+        );
     }
 
     /**
      * @param ContextContract $context
      * @return Context
-     * @throws ContextException
      */
     private function assertContext(ContextContract $context): Context
     {
-        if ($context instanceof Context) {
-            return $context;
-        }
-
-        $class = Context::class;
-
-        throw ContextException::invalidContext($context, "Not a $class");
-    }
-
-    public static function serializer(string $serializer = null): string
-    {
-        if (null !== $serializer) {
-            self::$serializer = $serializer;
-        } else {
-            self::$serializer ??= function_exists('igbinary_serialize')
-                ? 'igbinary_serialize'
-                : 'serialize';
-        }
-
-        return self::$serializer;
+        return $context;
     }
 }

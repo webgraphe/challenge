@@ -3,6 +3,7 @@
 namespace Webgraphe\PredicateTree;
 
 use Iterator;
+use Webgraphe\PredicateTree\Contracts\ContextContract;
 
 abstract class AbstractListRule extends AbstractRule implements Iterator
 {
@@ -15,12 +16,12 @@ abstract class AbstractListRule extends AbstractRule implements Iterator
         $this->rules = $rules;
     }
 
-    public function toArray(): array
+    public function toArray(ContextContract $context): array
     {
         return array_merge(
-            parent::toArray(),
+            parent::toArray($context),
             [
-                'rules' => array_map(fn(AbstractRule $rule) => $rule->toArray(), $this->rules)
+                'rules' => array_map(fn(AbstractRule $rule) => $rule->hash($context), $this->rules)
             ]
         );
     }

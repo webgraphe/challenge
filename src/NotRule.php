@@ -2,6 +2,9 @@
 
 namespace Webgraphe\PredicateTree;
 
+use Webgraphe\PredicateTree\Contracts\ContextContract;
+use Webgraphe\PredicateTree\Exceptions\RuleException;
+
 class NotRule extends AbstractRule
 {
     private AbstractRule $rule;
@@ -12,12 +15,12 @@ class NotRule extends AbstractRule
         $this->rule = $rule;
     }
 
-    public function toArray(): array
+    public function toArray(ContextContract $context): array
     {
         return array_merge(
-            parent::toArray(),
+            parent::toArray($context),
             [
-                'rule' => $this->rule->toArray(),
+                'rule' => $this->rule->hash($context),
             ]
         );
     }
@@ -31,6 +34,11 @@ class NotRule extends AbstractRule
         return new static($rule);
     }
 
+    /**
+     * @param Context $context
+     * @return bool
+     * @throws RuleException
+     */
     protected function evaluateProtected(Context $context): bool
     {
         return !$context->evaluate($this->rule);
