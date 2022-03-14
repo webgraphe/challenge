@@ -4,11 +4,10 @@ namespace Webgraphe\PredicateTree;
 
 use Webgraphe\PredicateTree\Contracts\ContextContract;
 use Webgraphe\PredicateTree\Contracts\RuleContract;
+use Webgraphe\PredicateTree\Exceptions\UnsupportedRuleException;
 
 abstract class AbstractRule implements RuleContract
 {
-    private static string $serializer;
-
     public function __construct()
     {
     }
@@ -27,10 +26,11 @@ abstract class AbstractRule implements RuleContract
     /**
      * @param ContextContract $context
      * @return bool
+     * @throws Exceptions\UnsupportedContextException
      */
     final public function evaluate(ContextContract $context): bool
     {
-        return $this->evaluateProtected($this->assertContext($context));
+        return $this->evaluateProtected(Context::assertType($context));
     }
 
     final public function hash(ContextContract $context): string
@@ -49,11 +49,16 @@ abstract class AbstractRule implements RuleContract
     }
 
     /**
-     * @param ContextContract $context
-     * @return Context
+     * @param RuleContract $rule
+     * @return AbstractRule
+     * @throws UnsupportedRuleException
      */
-    private function assertContext(ContextContract $context): Context
+    final public static function assertType(RuleContract $rule): AbstractRule
     {
-        return $context;
+        if ($rule instanceof AbstractRule) {
+            return $rule;
+        }
+
+        throw UnsupportedRuleException::create($rule);
     }
 }

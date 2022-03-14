@@ -2,9 +2,9 @@
 
 namespace Webgraphe\PredicateTree\Exceptions;
 
-use Exception;
+use Webgraphe\PredicateTree\PredicateTreeException;
 
-class InvalidSerializerException extends Exception
+class InvalidSerializerException extends PredicateTreeException
 {
 
 }

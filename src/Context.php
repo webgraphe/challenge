@@ -5,8 +5,11 @@ namespace Webgraphe\PredicateTree;
 use Exception;
 use Webgraphe\PredicateTree\Contracts\ContextContract;
 use Webgraphe\PredicateTree\Contracts\RuleContract;
+use Webgraphe\PredicateTree\Exceptions\InvalidRuleNameException;
 use Webgraphe\PredicateTree\Exceptions\InvalidSerializerException;
 use Webgraphe\PredicateTree\Exceptions\RuleException;
+use Webgraphe\PredicateTree\Exceptions\RuleNameConflictException;
+use Webgraphe\PredicateTree\Exceptions\UnsupportedContextException;
 
 class Context implements ContextContract
 {
@@ -20,11 +23,15 @@ class Context implements ContextContract
         self::SERIALIZER_JSON_ENCODE,
     ];
 
+    public const RULE_NAME_REGEX = '/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/';
+
     /** @var array<string, Result> */
     private array $resultCache = [];
     /** @var RuleContract[] */
     private array $ruleStack = [];
     private string $serializer;
+    /** @var array<string, RuleContract> $rules Associated by name */
+    private $rules = [];
 
     private function __construct(string $serializer)
     {
@@ -45,6 +52,20 @@ class Context implements ContextContract
         }
 
         return new static($serializer);
+    }
+
+    /**
+     * @param ContextContract $context
+     * @return Context
+     * @throws UnsupportedContextException
+     */
+    public static function assertType(ContextContract $context): Context
+    {
+        if ($context instanceof Context) {
+            return $context;
+        }
+
+        throw UnsupportedContextException::create($context);
     }
 
     public function jsonSerialize(): array
@@ -78,6 +99,33 @@ class Context implements ContextContract
         $this->pop();
 
         return $result->isSuccess();
+    }
+
+    /**
+     * @param RuleContract $rule
+     * @param string $uniqueName
+     * @return static
+     * @throws InvalidRuleNameException
+     * @throws RuleNameConflictException
+     */
+    public function registerRule(RuleContract $rule, string $uniqueName): self
+    {
+        if (isset($this->rules[$uniqueName])) {
+            throw new RuleNameConflictException($uniqueName);
+        }
+
+        if (!preg_match(self::RULE_NAME_REGEX, $uniqueName)) {
+            throw new InvalidRuleNameException($uniqueName);
+        }
+
+        $this->rules[$uniqueName] = $rule;
+
+        return $this;
+    }
+
+    public function getRule(string $name): ?RuleContract
+    {
+        return $this->rules[$name] ?? null;
     }
 
     private function push(RuleContract $predicate)

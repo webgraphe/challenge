@@ -22,7 +22,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Webgraphe\\Tests\\LogicTree\\": "tests/"
+            "Webgraphe\\Tests\\PredicateTree\\": "tests/"
         }
     },
     "require": {
