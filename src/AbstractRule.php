@@ -8,8 +8,41 @@ use Webgraphe\PredicateTree\Exceptions\UnsupportedRuleException;
 
 abstract class AbstractRule implements RuleContract
 {
+    private static array $nameCache = [];
+
     public function __construct()
     {
+    }
+
+    public function name(): string
+    {
+        $parts = explode('\\', get_class($this));
+        $last = array_pop($parts);
+        if (isset(self::$nameCache[$last])) {
+            return self::$nameCache[$last];
+        }
+
+        return self::$nameCache[$last] = self::words(preg_replace('/Rule$/', '', $last));
+    }
+
+    private static function words(string $value): string
+    {
+        if (!ctype_lower($value)) {
+            $value = preg_replace('/\s+/u', '', ucwords($value));
+            $value = preg_replace('/(.)(?=[A-Z])/u', '$1 ', $value);
+        }
+
+        return trim($value);
+    }
+
+    public function summary(): ?string
+    {
+        return null;
+    }
+
+    public function description(): ?string
+    {
+        return null;
     }
 
     /**
@@ -43,6 +76,8 @@ abstract class AbstractRule implements RuleContract
         return $context->serialize(
             [
                 'class' => static::class,
+                'summary' => $this->summary(),
+                'description' => $this->description(),
                 'data' => $this->toArray($context),
             ]
         );

@@ -14,6 +14,7 @@ use Webgraphe\PredicateTree\Exceptions\RuleNameConflictException;
 use Webgraphe\PredicateTree\Exceptions\UnsupportedContextException;
 use Webgraphe\PredicateTree\NotRule;
 use Webgraphe\PredicateTree\OrRule;
+use Webgraphe\Tests\PredicateTree\Dummies\AbstractDummyRule;
 use Webgraphe\Tests\PredicateTree\TestCase;
 
 /**
@@ -21,9 +22,9 @@ use Webgraphe\Tests\PredicateTree\TestCase;
  */
 class ContextTest extends TestCase
 {
-    private function easyRule(bool $returnValue): AbstractRule
+    private function easyRule(bool $returnValue): AbstractDummyRule
     {
-        return new class($returnValue) extends AbstractRule {
+        return new class($returnValue) extends AbstractDummyRule {
             private bool $returnValue;
 
             public function __construct(bool $returnValue)
@@ -51,7 +52,7 @@ class ContextTest extends TestCase
 
     private function exceptionRule(string $message, int $code): AbstractRule
     {
-        return new class($message, $code) extends AbstractRule {
+        return new class($message, $code) extends AbstractDummyRule {
             private string $message;
             private int $code;
 

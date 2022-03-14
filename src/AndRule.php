@@ -6,6 +6,17 @@ use Webgraphe\PredicateTree\Exceptions\RuleException;
 
 class AndRule extends AbstractListRule
 {
+
+    public function summary(): string
+    {
+        return "Logical AND";
+    }
+
+    public function description(): string
+    {
+        return "Returns TRUE if and only if all operands return TRUE";
+    }
+
     /**
      * @param Context $context
      * @return bool

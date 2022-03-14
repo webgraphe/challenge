@@ -15,6 +15,16 @@ class NotRule extends AbstractRule
         $this->rule = $rule;
     }
 
+    public function summary(): string
+    {
+        return "Negates the operand";
+    }
+
+    public function description(): string
+    {
+        return "Returns TRUE if and only if the operand returns FALSE";
+    }
+
     public function toArray(ContextContract $context): array
     {
         return array_merge(
