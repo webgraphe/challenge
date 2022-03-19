@@ -1,8 +1,8 @@
 <?php
 
-namespace Webgraphe\RuleTree\Exceptions;
+namespace Webgraphe\Challenge\Exceptions;
 
-use Webgraphe\RuleTree\RuleTreeException;
+use Webgraphe\Challenge\RuleTreeException;
 
 class RuleNameConflictException extends RuleTreeException
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Webgraphe\RuleTree;
+namespace Webgraphe\Challenge;
 
-use Webgraphe\RuleTree\Contracts\ContextContract;
-use Webgraphe\RuleTree\Exceptions\EvaluationException;
+use Webgraphe\Challenge\Contracts\ContextContract;
+use Webgraphe\Challenge\Exceptions\EvaluationException;
 
 class NotRule extends AbstractRule
 {

@@ -1,10 +1,13 @@
 <?php
 
-namespace Webgraphe\Tests\RuleTree\Unit;
+namespace Webgraphe\Tests\Challenge\Unit;
 
-use Webgraphe\RuleTree\NotRule;
-use Webgraphe\Tests\RuleTree\TestCase;
+use Webgraphe\Challenge\NotRule;
+use Webgraphe\Tests\Challenge\TestCase;
 
+/**
+ * @covers ::NotRule
+ */
 class NotRuleTest extends TestCase
 {
     public function testGetRule()

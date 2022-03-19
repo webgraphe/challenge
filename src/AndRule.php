@@ -1,8 +1,8 @@
 <?php
 
-namespace Webgraphe\RuleTree;
+namespace Webgraphe\Challenge;
 
-use Webgraphe\RuleTree\Exceptions\EvaluationException;
+use Webgraphe\Challenge\Exceptions\EvaluationException;
 
 class AndRule extends AbstractListRule
 {

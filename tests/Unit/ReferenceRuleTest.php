@@ -1,17 +1,19 @@
 <?php
 
-namespace Webgraphe\Tests\RuleTree\Unit;
+namespace Webgraphe\Tests\Challenge\Unit;
 
-use Webgraphe\RuleTree\Context;
-use Webgraphe\RuleTree\Exceptions\EvaluationException;
-use Webgraphe\RuleTree\Exceptions\InvalidRuleNameException;
-use Webgraphe\RuleTree\Exceptions\InvalidSerializerException;
-use Webgraphe\RuleTree\Exceptions\RuleNameConflictException;
-use Webgraphe\RuleTree\Exceptions\RuleNotFoundException;
-use Webgraphe\RuleTree\NotRule;
-use Webgraphe\RuleTree\ReferenceRule;
-use Webgraphe\Tests\RuleTree\TestCase;
+use Webgraphe\Challenge\Context;
+use Webgraphe\Challenge\Exceptions\EvaluationException;
+use Webgraphe\Challenge\Exceptions\InvalidRuleNameException;
+use Webgraphe\Challenge\Exceptions\InvalidSerializerException;
+use Webgraphe\Challenge\Exceptions\RuleNameConflictException;
+use Webgraphe\Challenge\NotRule;
+use Webgraphe\Challenge\ReferenceRule;
+use Webgraphe\Tests\Challenge\TestCase;
 
+/**
+ * @covers ReferenceRule
+ */
 class ReferenceRuleTest extends TestCase
 {
     /**

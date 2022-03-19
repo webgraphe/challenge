@@ -1,9 +1,9 @@
 <?php
 
-namespace Webgraphe\RuleTree;
+namespace Webgraphe\Challenge;
 
-use Webgraphe\RuleTree\Contracts\ContextContract;
-use Webgraphe\RuleTree\Contracts\RuleContract;
+use Webgraphe\Challenge\Contracts\ContextContract;
+use Webgraphe\Challenge\Contracts\RuleContract;
 
 class Result
 {

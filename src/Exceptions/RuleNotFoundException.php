@@ -1,6 +1,6 @@
 <?php
 
-namespace Webgraphe\RuleTree\Exceptions;
+namespace Webgraphe\Challenge\Exceptions;
 
 class RuleNotFoundException extends EvaluationException
 {

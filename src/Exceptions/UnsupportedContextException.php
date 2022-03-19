@@ -1,9 +1,9 @@
 <?php
 
-namespace Webgraphe\RuleTree\Exceptions;
+namespace Webgraphe\Challenge\Exceptions;
 
-use Webgraphe\RuleTree\Contracts\ContextContract;
-use Webgraphe\RuleTree\RuleTreeException;
+use Webgraphe\Challenge\Contracts\ContextContract;
+use Webgraphe\Challenge\RuleTreeException;
 
 class UnsupportedContextException extends RuleTreeException
 {

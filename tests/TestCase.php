@@ -1,12 +1,12 @@
 <?php
 
-namespace Webgraphe\Tests\RuleTree;
+namespace Webgraphe\Tests\Challenge;
 
 use Exception;
-use Webgraphe\RuleTree\AbstractRule;
-use Webgraphe\RuleTree\Context;
-use Webgraphe\RuleTree\Contracts\ContextContract;
-use Webgraphe\Tests\RuleTree\Dummies\AbstractDummyRule;
+use Webgraphe\Challenge\AbstractRule;
+use Webgraphe\Challenge\Context;
+use Webgraphe\Challenge\Contracts\ContextContract;
+use Webgraphe\Tests\Challenge\Dummies\AbstractDummyRule;
 
 class TestCase extends \PHPUnit\Framework\TestCase
 {

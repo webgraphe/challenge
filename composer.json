@@ -17,12 +17,12 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Webgraphe\\RuleTree\\": "src/"
+            "Webgraphe\\Challenge\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Webgraphe\\Tests\\RuleTree\\": "tests/"
+            "Webgraphe\\Tests\\Challenge\\": "tests/"
         }
     },
     "require": {

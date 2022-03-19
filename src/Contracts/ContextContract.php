@@ -1,6 +1,6 @@
 <?php
 
-namespace Webgraphe\RuleTree\Contracts;
+namespace Webgraphe\Challenge\Contracts;
 
 use JsonSerializable;
 

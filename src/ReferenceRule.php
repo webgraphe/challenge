@@ -1,9 +1,9 @@
 <?php
 
-namespace Webgraphe\RuleTree;
+namespace Webgraphe\Challenge;
 
-use Webgraphe\RuleTree\Exceptions\EvaluationException;
-use Webgraphe\RuleTree\Exceptions\RuleNotFoundException;
+use Webgraphe\Challenge\Exceptions\EvaluationException;
+use Webgraphe\Challenge\Exceptions\RuleNotFoundException;
 
 class ReferenceRule extends AbstractRule
 {

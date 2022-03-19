@@ -1,16 +1,19 @@
 <?php
 
-namespace Webgraphe\Tests\RuleTree\Unit;
+namespace Webgraphe\Tests\Challenge\Unit;
 
-use Webgraphe\RuleTree\AbstractRule;
-use Webgraphe\RuleTree\Context;
-use Webgraphe\RuleTree\Contracts\ContextContract;
-use Webgraphe\RuleTree\Contracts\RuleContract;
-use Webgraphe\RuleTree\Exceptions\UnsupportedRuleException;
-use Webgraphe\Tests\RuleTree\Dummies\AbstractDummyRule;
-use Webgraphe\Tests\RuleTree\Dummies\FinalDummyRule;
-use Webgraphe\Tests\RuleTree\TestCase;
+use Webgraphe\Challenge\AbstractRule;
+use Webgraphe\Challenge\Context;
+use Webgraphe\Challenge\Contracts\ContextContract;
+use Webgraphe\Challenge\Contracts\RuleContract;
+use Webgraphe\Challenge\Exceptions\UnsupportedRuleException;
+use Webgraphe\Tests\Challenge\Dummies\AbstractDummyRule;
+use Webgraphe\Tests\Challenge\Dummies\FinalDummyRule;
+use Webgraphe\Tests\Challenge\TestCase;
 
+/**
+ * @covers ::AbstractRule
+ */
 class AbstractRuleTest extends TestCase
 {
     private function rule(): AbstractRule

@@ -1,20 +1,20 @@
 <?php
 
-namespace Webgraphe\Tests\RuleTree\Unit;
+namespace Webgraphe\Tests\Challenge\Unit;
 
 use Exception;
-use Webgraphe\RuleTree\AndRule;
-use Webgraphe\RuleTree\Context;
-use Webgraphe\RuleTree\Contracts\ContextContract;
-use Webgraphe\RuleTree\Exceptions\EvaluationException;
-use Webgraphe\RuleTree\Exceptions\InvalidRuleNameException;
-use Webgraphe\RuleTree\Exceptions\InvalidSerializerException;
-use Webgraphe\RuleTree\Exceptions\RuleNameConflictException;
-use Webgraphe\RuleTree\Exceptions\UnsupportedContextException;
-use Webgraphe\RuleTree\NotRule;
-use Webgraphe\RuleTree\OrRule;
-use Webgraphe\RuleTree\ReferenceRule;
-use Webgraphe\Tests\RuleTree\TestCase;
+use Webgraphe\Challenge\AndRule;
+use Webgraphe\Challenge\Context;
+use Webgraphe\Challenge\Contracts\ContextContract;
+use Webgraphe\Challenge\Exceptions\EvaluationException;
+use Webgraphe\Challenge\Exceptions\InvalidRuleNameException;
+use Webgraphe\Challenge\Exceptions\InvalidSerializerException;
+use Webgraphe\Challenge\Exceptions\RuleNameConflictException;
+use Webgraphe\Challenge\Exceptions\UnsupportedContextException;
+use Webgraphe\Challenge\NotRule;
+use Webgraphe\Challenge\OrRule;
+use Webgraphe\Challenge\ReferenceRule;
+use Webgraphe\Tests\Challenge\TestCase;
 
 /**
  * @covers ::Context

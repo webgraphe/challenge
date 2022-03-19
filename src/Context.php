@@ -1,15 +1,15 @@
 <?php
 
-namespace Webgraphe\RuleTree;
+namespace Webgraphe\Challenge;
 
 use Exception;
-use Webgraphe\RuleTree\Contracts\ContextContract;
-use Webgraphe\RuleTree\Contracts\RuleContract;
-use Webgraphe\RuleTree\Exceptions\InvalidRuleNameException;
-use Webgraphe\RuleTree\Exceptions\InvalidSerializerException;
-use Webgraphe\RuleTree\Exceptions\EvaluationException;
-use Webgraphe\RuleTree\Exceptions\RuleNameConflictException;
-use Webgraphe\RuleTree\Exceptions\UnsupportedContextException;
+use Webgraphe\Challenge\Contracts\ContextContract;
+use Webgraphe\Challenge\Contracts\RuleContract;
+use Webgraphe\Challenge\Exceptions\InvalidRuleNameException;
+use Webgraphe\Challenge\Exceptions\InvalidSerializerException;
+use Webgraphe\Challenge\Exceptions\EvaluationException;
+use Webgraphe\Challenge\Exceptions\RuleNameConflictException;
+use Webgraphe\Challenge\Exceptions\UnsupportedContextException;
 
 class Context implements ContextContract
 {

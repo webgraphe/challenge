@@ -1,6 +1,6 @@
 <?php
 
-namespace Webgraphe\RuleTree;
+namespace Webgraphe\Challenge;
 
 use Exception;
 
