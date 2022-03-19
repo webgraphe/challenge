@@ -54,11 +54,6 @@ class AbstractRuleTest extends TestCase
                 return '';
             }
 
-            public function toArray(ContextContract $context): array
-            {
-                return [];
-            }
-
             public function summary(): string
             {
                 return 'Summary';
@@ -72,6 +67,11 @@ class AbstractRuleTest extends TestCase
             public function name(): string
             {
                 return 'Name';
+            }
+
+            public function marshal(ContextContract $context): array
+            {
+                return [];
             }
         };
 

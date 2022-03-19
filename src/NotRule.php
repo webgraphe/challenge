@@ -3,7 +3,7 @@
 namespace Webgraphe\RuleTree;
 
 use Webgraphe\RuleTree\Contracts\ContextContract;
-use Webgraphe\RuleTree\Exceptions\RuleEvaluationException;
+use Webgraphe\RuleTree\Exceptions\EvaluationException;
 
 class NotRule extends AbstractRule
 {
@@ -13,6 +13,15 @@ class NotRule extends AbstractRule
     {
         parent::__construct();
         $this->rule = $rule;
+    }
+
+    /**
+     * @param AbstractRule $rule
+     * @return static
+     */
+    final public static function create(AbstractRule $rule): self
+    {
+        return new static($rule);
     }
 
     public function summary(): string
@@ -25,10 +34,10 @@ class NotRule extends AbstractRule
         return "Returns TRUE if and only if the operand returns FALSE";
     }
 
-    public function toArray(ContextContract $context): array
+    protected function data(ContextContract $context): array
     {
         return array_merge(
-            parent::toArray($context),
+            parent::data($context),
             [
                 'rule' => $this->rule->hash($context),
             ]
@@ -36,18 +45,17 @@ class NotRule extends AbstractRule
     }
 
     /**
-     * @param AbstractRule $rule
-     * @return static
+     * @return AbstractRule
      */
-    final public static function create(AbstractRule $rule): self
+    public function getRule(): AbstractRule
     {
-        return new static($rule);
+        return $this->rule;
     }
 
     /**
      * @param Context $context
      * @return bool
-     * @throws RuleEvaluationException
+     * @throws EvaluationException
      */
     protected function evaluateProtected(Context $context): bool
     {

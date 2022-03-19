@@ -20,10 +20,10 @@ class Result
         $this->success = $success;
     }
 
-    public function toArray(ContextContract $context): array
+    public function marshal(ContextContract $context): array
     {
         return [
-            'rule' => $this->rule->toArray($context),
+            'rule' => $this->rule->marshal($context),
             'success' => $this->success,
         ];
     }

@@ -2,7 +2,7 @@
 
 namespace Webgraphe\RuleTree;
 
-use Webgraphe\RuleTree\Exceptions\RuleEvaluationException;
+use Webgraphe\RuleTree\Exceptions\EvaluationException;
 
 class AndRule extends AbstractListRule
 {
@@ -20,7 +20,7 @@ class AndRule extends AbstractListRule
     /**
      * @param Context $context
      * @return bool
-     * @throws RuleEvaluationException
+     * @throws EvaluationException
      */
     protected function evaluateProtected(Context $context): bool
     {

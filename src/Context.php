@@ -7,7 +7,7 @@ use Webgraphe\RuleTree\Contracts\ContextContract;
 use Webgraphe\RuleTree\Contracts\RuleContract;
 use Webgraphe\RuleTree\Exceptions\InvalidRuleNameException;
 use Webgraphe\RuleTree\Exceptions\InvalidSerializerException;
-use Webgraphe\RuleTree\Exceptions\RuleEvaluationException;
+use Webgraphe\RuleTree\Exceptions\EvaluationException;
 use Webgraphe\RuleTree\Exceptions\RuleNameConflictException;
 use Webgraphe\RuleTree\Exceptions\UnsupportedContextException;
 
@@ -78,23 +78,25 @@ class Context implements ContextContract
         return [
             'class' => get_class($this),
             'serializer' => $this->serializer,
-            'resultCache' => array_map(fn(Result $result) => $result->toArray($this), $this->resultCache),
-            'ruleStack' => array_map(fn(RuleContract $result) => $result->toArray($this), $this->ruleStack),
+            'resultCache' => array_map(fn(Result $result) => $result->marshal($this), $this->resultCache),
+            'ruleStack' => array_map(fn(RuleContract $rule) => $rule->marshal($this), $this->ruleStack),
         ];
     }
 
     /**
      * @param RuleContract $rule
      * @return bool
-     * @throws RuleEvaluationException
+     * @throws EvaluationException
      */
     public function evaluate(RuleContract $rule): bool
     {
         $this->push($rule);
         try {
             $result = $this->resultCache[$rule->hash($this)] ??= new Result($rule, $rule->evaluate($this));
+        } catch (EvaluationException $e) {
+            throw $e;
         } catch (Exception $previous) {
-            throw new RuleEvaluationException("Evaluation failed", 0, $previous);
+            throw new EvaluationException("Evaluation failed", 0, $previous);
         }
         $this->pop();
 

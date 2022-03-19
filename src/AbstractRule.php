@@ -14,6 +14,12 @@ abstract class AbstractRule implements RuleContract
     {
     }
 
+    /**
+     * @param Context $context
+     * @return bool
+     */
+    abstract protected function evaluateProtected(Context $context): bool;
+
     public function name(): string
     {
         $parts = explode('\\', get_class($this));
@@ -45,15 +51,19 @@ abstract class AbstractRule implements RuleContract
         return null;
     }
 
-    /**
-     * @param Context $context
-     * @return bool
-     */
-    abstract protected function evaluateProtected(Context $context): bool;
-
-    public function toArray(ContextContract $context): array
+    protected function data(ContextContract $context): array
     {
         return [];
+    }
+
+    final public function marshal(ContextContract $context): array
+    {
+        return [
+            'class' => static::class,
+            'summary' => $this->summary(),
+            'description' => $this->description(),
+            'data' => $this->data($context),
+        ];
     }
 
     /**
@@ -68,19 +78,7 @@ abstract class AbstractRule implements RuleContract
 
     final public function hash(ContextContract $context): string
     {
-        return hash('fnv1a64', $this->marshal($context));
-    }
-
-    private function marshal(ContextContract $context): string
-    {
-        return $context->serialize(
-            [
-                'class' => static::class,
-                'summary' => $this->summary(),
-                'description' => $this->description(),
-                'data' => $this->toArray($context),
-            ]
-        );
+        return hash('fnv1a64', $context->serialize($this->marshal($context)));
     }
 
     /**

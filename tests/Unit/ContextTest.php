@@ -3,18 +3,17 @@
 namespace Webgraphe\Tests\RuleTree\Unit;
 
 use Exception;
-use Webgraphe\RuleTree\AbstractRule;
 use Webgraphe\RuleTree\AndRule;
 use Webgraphe\RuleTree\Context;
 use Webgraphe\RuleTree\Contracts\ContextContract;
+use Webgraphe\RuleTree\Exceptions\EvaluationException;
 use Webgraphe\RuleTree\Exceptions\InvalidRuleNameException;
 use Webgraphe\RuleTree\Exceptions\InvalidSerializerException;
-use Webgraphe\RuleTree\Exceptions\RuleEvaluationException;
 use Webgraphe\RuleTree\Exceptions\RuleNameConflictException;
 use Webgraphe\RuleTree\Exceptions\UnsupportedContextException;
 use Webgraphe\RuleTree\NotRule;
 use Webgraphe\RuleTree\OrRule;
-use Webgraphe\Tests\RuleTree\Dummies\AbstractDummyRule;
+use Webgraphe\RuleTree\ReferenceRule;
 use Webgraphe\Tests\RuleTree\TestCase;
 
 /**
@@ -22,65 +21,6 @@ use Webgraphe\Tests\RuleTree\TestCase;
  */
 class ContextTest extends TestCase
 {
-    private function easyRule(bool $returnValue): AbstractDummyRule
-    {
-        return new class($returnValue) extends AbstractDummyRule {
-            private bool $returnValue;
-
-            public function __construct(bool $returnValue)
-            {
-                parent::__construct();
-                $this->returnValue = $returnValue;
-            }
-
-            public function toArray(ContextContract $context): array
-            {
-                return array_merge(
-                    parent::toArray($context),
-                    [
-                        'returnValue' => $this->returnValue,
-                    ]
-                );
-            }
-
-            protected function evaluateProtected(Context $context): bool
-            {
-                return $this->returnValue;
-            }
-        };
-    }
-
-    private function exceptionRule(string $message, int $code): AbstractRule
-    {
-        return new class($message, $code) extends AbstractDummyRule {
-            private string $message;
-            private int $code;
-
-            public function __construct(string $message, int $code)
-            {
-                parent::__construct();
-                $this->message = $message;
-                $this->code = $code;
-            }
-
-            public function toArray(ContextContract $context): array
-            {
-                return array_merge(
-                    parent::toArray($context),
-                    [
-                        'message' => $this->message,
-                        'code' => $this->code,
-                    ]
-                );
-            }
-
-            protected function evaluateProtected(Context $context): bool
-            {
-                throw new Exception($this->message, $this->code);
-            }
-        };
-    }
-
     /**
      * @throws InvalidSerializerException
      */
@@ -97,18 +37,23 @@ class ContextTest extends TestCase
     }
 
     /**
+     * @throws EvaluationException
+     * @throws InvalidRuleNameException
      * @throws InvalidSerializerException
-     * @throws RuleEvaluationException
+     * @throws RuleNameConflictException
      */
     public function testEvaluation()
     {
         $context = Context::create();
-        $true = $this->easyRule(true);
-        $false = $this->easyRule(false);
+        $context->registerRule($true = $this->booleanRule(true), 'true');
+        $false = $this->booleanRule(false);
         $this->assertFalse(
             $context->evaluate(
                 $and = AndRule::create(
-                    $subAnd = AndRule::create($true, $orTrue = OrRule::create($true, $true)),
+                    $subAnd = AndRule::create(
+                        $ref = ReferenceRule::create('true'),
+                        $orTrue = OrRule::create($true, $true)
+                    ),
                     $orFalse = OrRule::create($not = NotRule::create($true), $false)
                 )
             )
@@ -119,31 +64,35 @@ class ContextTest extends TestCase
             'serializer' => $context->getSerializer(),
             'resultCache' => [
                 $true->hash($context) => [
-                    'rule' => $true->toArray($context),
+                    'rule' => $true->marshal($context),
+                    'success' => true,
+                ],
+                $ref->hash($context) => [
+                    'rule' => $ref->marshal($context),
                     'success' => true,
                 ],
                 $orTrue->hash($context) => [
-                    'rule' => $orTrue->toArray($context),
+                    'rule' => $orTrue->marshal($context),
                     'success' => true,
                 ],
                 $subAnd->hash($context) => [
-                    'rule' => $subAnd->toArray($context),
+                    'rule' => $subAnd->marshal($context),
                     'success' => true,
                 ],
                 $not->hash($context) => [
-                    'rule' => $not->toArray($context),
+                    'rule' => $not->marshal($context),
                     'success' => false,
                 ],
                 $false->hash($context) => [
-                    'rule' => $false->toArray($context),
+                    'rule' => $false->marshal($context),
                     'success' => false,
                 ],
                 $orFalse->hash($context) => [
-                    'rule' => $orFalse->toArray($context),
+                    'rule' => $orFalse->marshal($context),
                     'success' => false,
                 ],
                 $and->hash($context) => [
-                    'rule' => $and->toArray($context),
+                    'rule' => $and->marshal($context),
                     'success' => false,
                 ],
             ],
@@ -154,18 +103,22 @@ class ContextTest extends TestCase
 
     /**
      * @throws InvalidSerializerException
-     * @throws RuleEvaluationException
+     * @throws EvaluationException
      */
     public function testEvaluationException()
     {
         $context = Context::create();
-        $this->expectException(RuleEvaluationException::class);
+        $this->expectException(EvaluationException::class);
         $this->expectExceptionMessage("Evaluation failed");
 
-        $rule = $this->exceptionRule($message = "Failure is part of the success", $code = 123);
+        $or = OrRule::create(
+            $not = NotRule::create(
+                $rule = $this->exceptionRule($message = "Failure is part of the success", $code = 123)
+            )
+        );
         try {
-            $context->evaluate($rule);
-        } catch (RuleEvaluationException $e) {
+            $context->evaluate($or);
+        } catch (EvaluationException $e) {
             $this->assertInstanceOf(Exception::class, $previous = $e->getPrevious());
             $this->assertEquals($message, $previous->getMessage());
             $this->assertEquals($code, $previous->getCode());
@@ -174,7 +127,9 @@ class ContextTest extends TestCase
                 'serializer' => $context->getSerializer(),
                 'resultCache' => [],
                 'ruleStack' => [
-                    $rule->toArray($context),
+                    $or->marshal($context),
+                    $not->marshal($context),
+                    $rule->marshal($context),
                 ],
             ];
             $this->assertEquals(json_encode($payload), json_encode($context));
@@ -212,8 +167,8 @@ class ContextTest extends TestCase
     public function testRegistry()
     {
         $context = Context::create();
-        $context->registerRule($true = $this->easyRule(true), 'true');
-        $context->registerRule($false = $this->easyRule(false), 'false');
+        $context->registerRule($true = $this->booleanRule(true), 'true');
+        $context->registerRule($false = $this->booleanRule(false), 'false');
 
         $this->assertNull($context->getRule('null'));
         $this->assertEquals($true, $context->getRule('true'));
@@ -233,9 +188,8 @@ class ContextTest extends TestCase
         $this->expectException(InvalidRuleNameException::class);
         $name = '1nvalid';
         $this->expectExceptionMessage($name);
-        $context->registerRule($this->easyRule(true), $name);
+        $context->registerRule($this->booleanRule(true), $name);
     }
-
 
     /**
      * @return void
@@ -246,7 +200,7 @@ class ContextTest extends TestCase
     public function testRuleNameConflictException()
     {
         $context = Context::create();
-        $context->registerRule($true = $this->easyRule(true), $name = 'true');
+        $context->registerRule($true = $this->booleanRule(true), $name = 'true');
 
         $this->expectException(RuleNameConflictException::class);
         $this->expectExceptionMessage($name);

@@ -2,14 +2,14 @@
 
 namespace Webgraphe\RuleTree\Contracts;
 
-use Webgraphe\RuleTree\Exceptions\UnsupportedContextException;
+use Exception;
 
 interface RuleContract
 {
     /**
      * @param ContextContract $context
      * @return bool
-     * @throws UnsupportedContextException
+     * @throws Exception
      */
     public function evaluate(ContextContract $context): bool;
 
@@ -21,5 +21,5 @@ interface RuleContract
 
     public function description(): ?string;
 
-    public function toArray(ContextContract $context): array;
+    public function marshal(ContextContract $context): array;
 }

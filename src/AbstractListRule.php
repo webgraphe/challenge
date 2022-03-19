@@ -16,10 +16,10 @@ abstract class AbstractListRule extends AbstractRule implements Iterator
         $this->rules = $rules;
     }
 
-    public function toArray(ContextContract $context): array
+    protected function data(ContextContract $context): array
     {
         return array_merge(
-            parent::toArray($context),
+            parent::data($context),
             [
                 'rules' => array_map(fn(AbstractRule $rule) => $rule->hash($context), $this->rules)
             ]
