@@ -139,14 +139,25 @@ class ContextTest extends TestCase
     }
 
     /**
+     * @dataProvider serializersDataProvider
      * @throws InvalidSerializerException
      */
-    public function testSerializers()
+    public function testSerializer(string $serializer)
     {
-        foreach (Context::SERIALIZERS as $serializer) {
-            $context = Context::create($serializer);
-            $this->assertEquals($serializer, $context->getSerializer());
+        if (!function_exists($serializer)) {
+            $this->markTestSkipped("Serializer '$serializer' not found");
         }
+
+        $context = Context::create($serializer);
+        $this->assertEquals($serializer, $context->getSerializer());
+    }
+
+    public function serializersDataProvider(): array
+    {
+        return array_map(
+            fn(string $serializer) => ['serializer' => $serializer],
+            Context::SERIALIZERS
+        );
     }
 
     public function testInvalidSerializer()
